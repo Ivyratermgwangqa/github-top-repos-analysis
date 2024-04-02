@@ -17,7 +17,9 @@ def plot_language_distribution(languages):
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.show()
-
+visualize_repo_stars(repo_df):
+plot_sentiment_pie_chart(sentiment_df):
+visualize_most_used_languages(username, most_used_languages):
 if __name__ == "__main__":
     # Example usage:
     languages = {'Python': 50, 'JavaScript': 30, 'Java': 20, 'C++': 15}
