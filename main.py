@@ -1,5 +1,11 @@
 import streamlit as st
-from github_data import get_most_starred_repositories, get_most_used_languages
+from github_data import get_most_starred_repositories
+from analysis import (
+    analyze_yearly_trends,
+    analyze_quarterly_trends,
+    perform_regression_analysis,
+    conduct_volatility_analysis,
+)
 
 def main():
     # Set page title and favicon
@@ -41,37 +47,40 @@ def main():
         st.write("Select analysis options from the sidebar.")
 
         # Add content for the Analysis page
-        analysis_options = ["Top Repositories", "Most Used Languages"]  # Update analysis options
+        analysis_options = ["Yearly Trends", "Quarterly Trends", "Regression Analysis", "Volatility Analysis"]  # Update analysis options
         analysis_choice = st.sidebar.selectbox("Select Analysis Option", analysis_options)
 
-        if analysis_choice == "Top Repositories":
-            st.subheader("Top Repositories Analysis")
-            language = st.sidebar.text_input("Enter programming language", "python")
-            limit = st.sidebar.slider("Select number of repositories", 1, 100, 10)
-            repositories = get_most_starred_repositories(language, limit)
-            if repositories:
-                st.write("Top Repositories:")
-                for repo in repositories:
-                    st.write(f"Name: {repo['name']}")
-                    st.write(f"Description: {repo['description']}")
-                    st.write(f"Stars: {repo['stars']}")
-                    st.write(f"Forks: {repo['forks']}")
-                    st.write(f"Watchers: {repo['watchers']}")
-                    st.write(f"Issues: {repo['issues']}")
-                    st.write("---")
-            else:
-                st.write("No repositories found.")
+        if analysis_choice == "Yearly Trends":
+            st.subheader("Yearly Trends Analysis")
+            # Perform yearly trends analysis
+            # Assuming 'data' is the DataFrame containing GitHub repository data
+            # Replace 'data' with your actual DataFrame
+            yearly_results = analyze_yearly_trends(data)
+            st.write(yearly_results)
 
-        elif analysis_choice == "Most Used Languages":
-            st.subheader("Most Used Languages Analysis")
-            username = st.sidebar.text_input("Enter GitHub username")
-            user_languages = get_most_used_languages(username)
-            if user_languages:
-                st.write("Most Used Languages:")
-                for language, count in user_languages:
-                    st.write(f"{language}: {count}")
-            else:
-                st.write("No language data found.")
+        elif analysis_choice == "Quarterly Trends":
+            st.subheader("Quarterly Trends Analysis")
+            # Perform quarterly trends analysis
+            # Assuming 'data' is the DataFrame containing GitHub repository data
+            # Replace 'data' with your actual DataFrame
+            quarterly_results = analyze_quarterly_trends(data)
+            st.write(quarterly_results)
+
+        elif analysis_choice == "Regression Analysis":
+            st.subheader("Regression Analysis")
+            # Perform regression analysis
+            # Assuming 'data' is the DataFrame containing GitHub repository data
+            # Replace 'data' with your actual DataFrame
+            regression_results = perform_regression_analysis(data)
+            st.write(regression_results)
+
+        elif analysis_choice == "Volatility Analysis":
+            st.subheader("Volatility Analysis")
+            # Perform volatility analysis
+            # Assuming 'data' is the DataFrame containing GitHub repository data
+            # Replace 'data' with your actual DataFrame
+            volatility_results = conduct_volatility_analysis(data)
+            st.write(volatility_results)
 
     elif choice == "About":
         st.subheader("About Page")
