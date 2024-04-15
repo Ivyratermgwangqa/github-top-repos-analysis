@@ -38,8 +38,8 @@ def load_data():
     # Load your data here or use a sample DataFrame for testing
     data = pd.read_csv("github_repos.csv")
     
-    # Convert 'Date' column to datetime format
-    data['Date'] = pd.to_datetime(data['Date'])
+    # Convert 'Date' column to datetime format with specified format
+    data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m-%d %H:%M:%S')  # Adjust the format as per your data
     
     # Add current date column
     data['Date'] = current_date
