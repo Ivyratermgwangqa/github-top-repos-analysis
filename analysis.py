@@ -163,7 +163,7 @@ def helper_function():
 
 def calculate_total_forks(repositories):
     """
-    Calculates the total number of forks across all repositories.
+    Calculate the total number of forks across all repositories.
     
     Args:
         repositories (list): A list of dictionaries containing information about GitHub repositories.
@@ -171,9 +171,15 @@ def calculate_total_forks(repositories):
     Returns:
         int: The total number of forks.
     """
-    total_forks = sum(repo['forks'] for repo in repositories)
+    total_forks = 0
+    
+    # Calculate total forks, skipping repositories without 'forks' information
+    for repo in repositories:
+        if 'forks' in repo:
+            total_forks += repo['forks']
+    
     return total_forks
-
+    
 def count_repositories_by_language(repositories):
     """
     Counts the number of repositories for each programming language.
