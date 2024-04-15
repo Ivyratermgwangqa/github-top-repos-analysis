@@ -1,5 +1,4 @@
 # analysis.py
-
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
@@ -20,7 +19,6 @@ data = [
 # Convert data to DataFrame
 df = pd.DataFrame(data)
 
-# Function to detect language from description
 def detect_language(description):
     try:
         return detect(description)
@@ -29,6 +27,7 @@ def detect_language(description):
 
 # Add 'Language' column based on 'Description'
 df['Language'] = df['Description'].apply(detect_language)
+
 
 # Print the modified DataFrame
 print(df)
