@@ -128,7 +128,7 @@ def calculate_average_stars(repositories):
 
 def find_most_popular_language(repositories):
     """
-    Finds the most popular programming language among the repositories.
+    Find the most popular programming language among the repositories.
     
     Args:
         repositories (list): A list of dictionaries containing information about GitHub repositories.
@@ -136,20 +136,21 @@ def find_most_popular_language(repositories):
     Returns:
         str: The most popular programming language.
     """
-    languages = {}
-    for repo in repositories:
-        lang = repo['language']
-        if lang:
-            languages[lang] = languages.get(lang, 0) + 1
+    language_counts = {}
     
-    if languages:
-        return max(languages, key=languages.get)
-    else:
-        return "Unknown"
-
-# Other analysis functions as needed
-
-# Other analysis functions as needed
+    # Count occurrences of each language
+    for repo in repositories:
+        if 'language' in repo:
+            language = repo['language']
+            if language in language_counts:
+                language_counts[language] += 1
+            else:
+                language_counts[language] = 1
+    
+    # Find the most popular language
+    most_popular_language = max(language_counts, key=language_counts.get)
+    
+    return most_popular_language
 
 def helper_function():
     """
