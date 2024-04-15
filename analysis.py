@@ -135,11 +135,45 @@ def find_most_popular_language(repositories):
 
 # Other analysis functions as needed
 
+# Other analysis functions as needed
+
 def helper_function():
     """
     A helper function to support the analysis operations.
     """
     pass
+
+def calculate_total_forks(repositories):
+    """
+    Calculates the total number of forks across all repositories.
+    
+    Args:
+        repositories (list): A list of dictionaries containing information about GitHub repositories.
+    
+    Returns:
+        int: The total number of forks.
+    """
+    total_forks = sum(repo['forks'] for repo in repositories)
+    return total_forks
+
+def count_repositories_by_language(repositories):
+    """
+    Counts the number of repositories for each programming language.
+    
+    Args:
+        repositories (list): A list of dictionaries containing information about GitHub repositories.
+    
+    Returns:
+        dict: A dictionary mapping programming languages to their repository counts.
+    """
+    language_counts = {}
+    for repo in repositories:
+        lang = repo['language']
+        if lang:
+            language_counts[lang] = language_counts.get(lang, 0) + 1
+    return language_counts
+
+# You can add more analysis functions as needed
 
 if __name__ == "__main__":
     # Example usage:
@@ -152,3 +186,10 @@ if __name__ == "__main__":
     most_popular_language = find_most_popular_language(repositories)
     print(f"Average stars: {avg_stars}")
     print(f"Most popular language: {most_popular_language}")
+    total_forks = calculate_total_forks(repositories)
+    print(f"Total forks: {total_forks}")
+    
+    language_counts = count_repositories_by_language(repositories)
+    print("Repository counts by language:")
+    for language, count in language_counts.items():
+        print(f"{language}: {count}")
