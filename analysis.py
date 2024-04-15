@@ -182,21 +182,23 @@ def calculate_total_forks(repositories):
     
 def count_repositories_by_language(repositories):
     """
-    Counts the number of repositories for each programming language.
+    Count the number of repositories for each programming language.
     
     Args:
         repositories (list): A list of dictionaries containing information about GitHub repositories.
     
     Returns:
-        dict: A dictionary mapping programming languages to their repository counts.
+        dict: A dictionary where keys are programming languages and values are the corresponding counts.
     """
     language_counts = {}
+    
+    # Count repositories by language, skipping repositories without 'language' information
     for repo in repositories:
-        lang = repo['language']
-        if lang:
+        if 'language' in repo:
+            lang = repo['language']
             language_counts[lang] = language_counts.get(lang, 0) + 1
+    
     return language_counts
-
 # You can add more analysis functions as needed
 
 if __name__ == "__main__":
