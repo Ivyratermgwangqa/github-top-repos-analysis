@@ -84,23 +84,6 @@ def visualize_quarterly_trends(data):
     plt.title('Quarterly Trends in GitHub Repositories')
     st.pyplot()
 
-def visualize_language_distribution(data):
-    """
-    Visualize the distribution of programming languages in GitHub repositories.
-
-    Args:
-        data (pd.DataFrame): DataFrame containing GitHub repository data.
-    """
-    language_counts = data['Language'].value_counts()
-
-    plt.figure(figsize=(10, 6))
-    language_counts.plot(kind='bar')
-    plt.xlabel('Programming Language')
-    plt.ylabel('Number of Repositories')
-    plt.title('Distribution of Programming Languages in GitHub Repositories')
-    plt.xticks(rotation=45, ha='right')
-    st.pyplot()
-
 def visualize_correlation_matrix(data):
     """
     Visualize the correlation matrix of numerical features in the GitHub repository data.
