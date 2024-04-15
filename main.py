@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from datetime import datetime
 from github_data import get_most_starred_repositories
 from analysis import (
     analyze_yearly_trends,
@@ -16,8 +17,15 @@ def load_data():
     """
     Load sample GitHub repository data.
     """
+    # Get current date
+    current_date = datetime.today().strftime('%Y-%m-%d')
+
     # Load your data here or use a sample DataFrame for testing
     data = pd.read_csv("github_repos.csv")
+    
+    # Add current date column
+    data['Date'] = current_date
+    
     return data
 
 def main():
