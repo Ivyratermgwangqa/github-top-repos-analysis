@@ -44,6 +44,9 @@ def load_data():
     # Add current date column
     data['Date'] = current_date
     
+    # Print data types of all columns
+    print(data.dtypes)
+    
     return data
 
 def main():
