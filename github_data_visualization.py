@@ -1,119 +1,227 @@
 import streamlit as st
 import pandas as pd
-from github_data import get_most_starred_repositories
-from analysis import (
-    analyze_yearly_trends,
-    analyze_quarterly_trends,
-    perform_regression_analysis,
-    calculate_average_stars,
-    find_most_popular_language,
-    calculate_total_forks,
-    count_repositories_by_language,
-    conduct_volatility_analysis
-)
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-def load_data():
+def visualize_language_distribution(data):
     """
-    Load sample GitHub repository data.
-    """
-    # Load your data here or use a sample DataFrame for testing
-    data = pd.read_csv("github_repos.csv")
-    return data
+    Visualize the distribution of programming languages in GitHub repositories.
 
-def main():
-    st.title("GitHub Repository Analysis")
-    st.sidebar.title("Options")
-
-    data = load_data()
-
-    # Sidebar options
-    analysis_option = st.sidebar.selectbox("Select Analysis", ["Yearly Trends", "Quarterly Trends", "Regression Analysis", "Volatility Analysis"])
-    if analysis_option == "Yearly Trends":
-        st.header("Yearly Trends Analysis")
-        yearly_results = analyze_yearly_trends(data)
-        st.write(yearly_results)
-    elif analysis_option == "Quarterly Trends":
-        st.header("Quarterly Trends Analysis")
-        quarterly_results = analyze_quarterly_trends(data)
-        st.write(quarterly_results)
-    elif analysis_option == "Regression Analysis":
-        st.header("Regression Analysis")
-        regression_results = perform_regression_analysis(data)
-        st.write(regression_results)
-    elif analysis_option == "Volatility Analysis":
-        st.header("Volatility Analysis")
-        volatility_results = conduct_volatility_analysis(data)
-        st.write(volatility_results)
-
-    # Additional analysis
-    st.header("Additional Analysis")
-    repositories = data.to_dict('records')  # Convert DataFrame to list of dictionaries
-    avg_stars = calculate_average_stars(repositories)
-    most_popular_language = find_most_popular_language(repositories)
-    total_forks = calculate_total_forks(repositories)
-    language_counts = count_repositories_by_language(repositories)
-
-    st.write(f"Average Stars: {avg_stars}")
-    st.write(f"Most Popular Language: {most_popular_language}")
-    st.write(f"Total Forks: {total_forks}")
-    st.write("Repository Counts by Language:")
-    st.write(language_counts)
-
-    # Data visualization
-    st.header("Data Visualization")
-
-    # Plot repository stats
-    st.subheader("Repository Stats")
-    plot_repository_stats(repositories)
-
-    # Fetch GitHub user info and repositories
-    username = st.text_input("Enter GitHub username")
-    user_info = fetch_github_user_info(username)
-    if user_info:
-        st.subheader("GitHub User Info")
-        st.write(user_info)
-        
-        st.subheader("GitHub User Repositories")
-        user_repos = fetch_user_repositories(username)
-        if user_repos:
-            st.write(user_repos)
-        else:
-            st.write("No repositories found for this user.")
-
-        # Visualize most used languages by the user
-        st.subheader("Most Used Languages")
-        most_used_languages = [('Python', 50), ('JavaScript', 30), ('Java', 20), ('C++', 15)]  # Example data
-        visualize_most_used_languages(username, most_used_languages)
-
-def plot_repository_stats(repositories):
-    """
-    Plots a bar chart of the number of stars, forks, watchers, and open issues for each repository.
-    
     Args:
-        repositories (list): A list of dictionaries containing information about GitHub repositories.
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
     """
-    names = [repo['name'] for repo in repositories]
-    stars = [repo['stars'] for repo in repositories]
-    forks = [repo['forks'] for repo in repositories]
-    watchers = [repo['watchers'] for repo in repositories]
-    issues = [repo['issues'] for repo in repositories]
+    # Group repositories by language and count the number of repositories per language
+    language_counts = data['Language'].value_counts()
 
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.bar(names, stars, color='skyblue', label='Stars')
-    ax.bar(names, forks, color='orange', label='Forks')
-    ax.bar(names, watchers, color='green', label='Watchers')
-    ax.bar(names, issues, color='red', label='Open Issues')
+    # Plot a bar chart
+    plt.figure(figsize=(10, 6))
+    language_counts.plot(kind='bar')
+    plt.xlabel('Language')
+    plt.ylabel('Number of Repositories')
+    plt.title('Number of Repositories by Language')
+    st.pyplot()
 
-    ax.set_xlabel('Repository')
-    ax.set_ylabel('Count')
-    ax.set_title('GitHub Repository Stats')
-    ax.set_xticklabels(names, rotation=45, ha='right')
-    ax.legend()
-    plt.tight_layout()
+def visualize_stars_vs_forks(data):
+    """
+    Visualize the relationship between stars and forks in GitHub repositories.
 
-    # Convert the plot to a Streamlit-compatible format and display it
-    st.pyplot(fig)
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    plt.figure(figsize=(10, 6))
+    plt.scatter(data['Stars'], data['Forks'])
+    plt.xlabel('Stars')
+    plt.ylabel('Forks')
+    plt.title('Stars vs Forks')
+    st.pyplot()
 
-if __name__ == "__main__":
-    main()
+def visualize_repo_stats(data):
+    """
+    Visualize repository statistics such as stars, forks, watchers, and issues.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    plt.figure(figsize=(10, 6))
+    data[['Stars', 'Forks', 'Watchers', 'Issues']].plot(kind='bar')
+    plt.xlabel('Repository')
+    plt.ylabel('Count')
+    plt.title('GitHub Repository Statistics')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
+
+def visualize_yearly_trends(data):
+    """
+    Visualize yearly trends in GitHub repository activity.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    # Group by year and count repositories
+    yearly_counts = data['Date'].dt.year.value_counts().sort_index()
+
+    plt.figure(figsize=(10, 6))
+    yearly_counts.plot(kind='line', marker='o')
+    plt.xlabel('Year')
+    plt.ylabel('Number of Repositories')
+    plt.title('Yearly Trends in GitHub Repositories')
+    st.pyplot()
+
+def visualize_quarterly_trends(data):
+    """
+    Visualize quarterly trends in GitHub repository activity.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    # Group by quarter and count repositories
+    quarterly_counts = data['Date'].dt.to_period('Q').value_counts().sort_index()
+
+    plt.figure(figsize=(10, 6))
+    quarterly_counts.plot(kind='line', marker='o')
+    plt.xlabel('Quarter')
+    plt.ylabel('Number of Repositories')
+    plt.title('Quarterly Trends in GitHub Repositories')
+    st.pyplot()
+
+def visualize_language_distribution(data):
+    """
+    Visualize the distribution of programming languages in GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    language_counts = data['Language'].value_counts()
+
+    plt.figure(figsize=(10, 6))
+    language_counts.plot(kind='bar')
+    plt.xlabel('Programming Language')
+    plt.ylabel('Number of Repositories')
+    plt.title('Distribution of Programming Languages in GitHub Repositories')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
+
+def visualize_correlation_matrix(data):
+    """
+    Visualize the correlation matrix of numerical features in the GitHub repository data.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    numerical_features = data.select_dtypes(include=['int64', 'float64'])
+    correlation_matrix = numerical_features.corr()
+
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+    plt.title('Correlation Matrix of Numerical Features')
+    st.pyplot()
+
+def visualize_repo_distribution_by_owner(data):
+    """
+    Visualize the distribution of GitHub repositories by owner.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    owner_counts = data['Owner'].value_counts().head(10)
+
+    plt.figure(figsize=(10, 6))
+    owner_counts.plot(kind='bar')
+    plt.xlabel('Repository Owner')
+    plt.ylabel('Number of Repositories')
+    plt.title('Distribution of GitHub Repositories by Owner (Top 10)')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
+
+def visualize_time_series(data, date_column):
+    """
+    Visualize time series data.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing time series data.
+        date_column (str): Name of the date column in the DataFrame.
+    """
+    data[date_column] = pd.to_datetime(data[date_column])
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(data[date_column], data['Value'])
+    plt.xlabel('Date')
+    plt.ylabel('Value')
+    plt.title('Time Series Data')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
+
+def visualize_repo_stars_distribution(data):
+    """
+    Visualize the distribution of stars for GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    plt.figure(figsize=(10, 6))
+    sns.histplot(data['Stars'], bins=20, kde=True)
+    plt.xlabel('Stars')
+    plt.ylabel('Frequency')
+    plt.title('Distribution of Stars for GitHub Repositories')
+    st.pyplot()
+
+def visualize_repo_watchers_vs_stars(data):
+    """
+    Visualize the relationship between the number of watchers and stars for GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='Stars', y='Watchers', data=data)
+    plt.xlabel('Stars')
+    plt.ylabel('Watchers')
+    plt.title('Number of Watchers vs. Stars for GitHub Repositories')
+    st.pyplot()
+
+def visualize_repo_issues_vs_stars(data):
+    """
+    Visualize the relationship between the number of issues and stars for GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='Stars', y='Issues', data=data)
+    plt.xlabel('Stars')
+    plt.ylabel('Issues')
+    plt.title('Number of Issues vs. Stars for GitHub Repositories')
+    st.pyplot()
+
+def visualize_avg_stars_by_language(data):
+    """
+    Visualize the average number of stars for each programming language in GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+    """
+    avg_stars_by_language = data.groupby('Language')['Stars'].mean().sort_values(ascending=False)
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=avg_stars_by_language.index, y=avg_stars_by_language.values)
+    plt.xlabel('Programming Language')
+    plt.ylabel('Average Stars')
+    plt.title('Average Stars by Programming Language in GitHub Repositories')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
+
+def visualize_top_languages(data, n=5):
+    """
+    Visualize the top N programming languages used in GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+        n (int): Number of top languages to visualize.
+    """
+    top_languages = data['Language'].value_counts().head(n)
+    plt.figure(figsize=(10, 6))
+    top_languages.plot(kind='bar')
+    plt.xlabel('Programming Language')
+    plt.ylabel('Number of Repositories')
+    plt.title(f'Top {n} Programming Languages in GitHub Repositories')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
