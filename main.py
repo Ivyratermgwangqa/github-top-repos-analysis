@@ -12,9 +12,21 @@ from analysis import (
     count_repositories_by_language,
     conduct_volatility_analysis
 )
-import matplotlib
-matplotlib.use('Agg')  # Set the backend to Agg
-import matplotlib.pyplot as plt
+from github_data_visualization import (
+    visualize_language_distribution,
+    visualize_stars_vs_forks,
+    visualize_repo_stats,
+    visualize_yearly_trends,
+    visualize_quarterly_trends,
+    visualize_correlation_matrix,
+    visualize_repo_distribution_by_owner,
+    visualize_time_series,
+    visualize_repo_stars_distribution,
+    visualize_repo_watchers_vs_stars,
+    visualize_repo_issues_vs_stars,
+    visualize_avg_stars_by_language,
+    visualize_top_languages
+)
 
 def load_data():
     """
@@ -78,18 +90,22 @@ def main():
 
         if analysis_choice == "Yearly Trends":
             st.header("Yearly Trends Analysis")
+            visualize_yearly_trends(data)
             yearly_results = analyze_yearly_trends(data)
             st.write(yearly_results)
         elif analysis_choice == "Quarterly Trends":
             st.header("Quarterly Trends Analysis")
+            visualize_quarterly_trends(data)
             quarterly_results = analyze_quarterly_trends(data)
             st.write(quarterly_results)
         elif analysis_choice == "Regression Analysis":
             st.header("Regression Analysis")
+            visualize_correlation_matrix(data)
             regression_results = perform_regression_analysis(data)
             st.write(regression_results)
         elif analysis_choice == "Volatility Analysis":
             st.header("Volatility Analysis")
+            visualize_time_series(data, 'Date')
             volatility_results = conduct_volatility_analysis(data)
             st.write(volatility_results)
 
@@ -107,6 +123,19 @@ def main():
             st.write(f"Total Forks: {total_forks}")
             st.write("Repository Counts by Language:")
             st.write(language_counts)
+            
+            # Visualize additional analysis
+            st.subheader("Additional Analysis Visualizations")
+            visualize_language_distribution(data)
+            visualize_stars_vs_forks(data)
+            visualize_repo_stats(data)
+            visualize_correlation_matrix(data)
+            visualize_repo_distribution_by_owner(data)
+            visualize_repo_stars_distribution(data)
+            visualize_repo_watchers_vs_stars(data)
+            visualize_repo_issues_vs_stars(data)
+            visualize_avg_stars_by_language(data)
+            visualize_top_languages(data)
         else:
             st.write("No data available for additional analysis.")
 
