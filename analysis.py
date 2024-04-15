@@ -88,10 +88,22 @@ def conduct_volatility_analysis(data):
     Returns:
         dict: A dictionary containing the analysis results.
     """
-    # Placeholder for volatility analysis logic
-    pass
-
-# Other analysis functions as needed
+    # Calculate the standard deviation of stars over time
+    stars_std = data['Stars'].std()
+    
+    # Determine if the volatility is high or low based on some threshold
+    if stars_std > 100:
+        volatility_level = "High"
+    else:
+        volatility_level = "Low"
+    
+    # Prepare analysis results
+    analysis_results = {
+        "Stars Volatility": stars_std,
+        "Volatility Level": volatility_level
+    }
+    
+    return analysis_results
 
 def helper_function():
     """
