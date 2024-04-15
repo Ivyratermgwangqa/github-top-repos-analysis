@@ -1,38 +1,85 @@
-import matplotlib.pyplot as plt
+import streamlit as st
 import pandas as pd
-import requests
+from github_data import get_most_starred_repositories
+from analysis import (
+    analyze_yearly_trends,
+    analyze_quarterly_trends,
+    perform_regression_analysis,
+    calculate_average_stars,
+    find_most_popular_language,
+    calculate_total_forks,
+    count_repositories_by_language
+)
+import matplotlib.pyplot as plt
 
-def get_most_starred_repositories(language='python', limit=10):
+def load_data():
     """
-    Fetches data about the most starred GitHub repositories for a given programming language.
-    
-    Args:
-        language (str): The programming language for which repositories are to be fetched. Default is 'python'.
-        limit (int): The maximum number of repositories to fetch. Default is 10.
-    
-    Returns:
-        list: A list of dictionaries containing information about the most starred repositories.
+    Load sample GitHub repository data.
     """
-    url = f'https://api.github.com/search/repositories?q=language:{language}&sort=stars&order=desc&per_page={limit}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        repositories = []
-        for item in data['items']:
-            repository = {
-                'name': item['name'],
-                'url': item['html_url'],
-                'description': item['description'],
-                'stars': item['stargazers_count'],
-                'forks': item['forks_count'],
-                'watchers': item['watchers_count'],
-                'issues': item['open_issues_count']
-            }
-            repositories.append(repository)
-        return repositories
-    else:
-        print(f"Failed to fetch repositories. Status code: {response.status_code}")
-        return []
+    # Load your data here or use a sample DataFrame for testing
+    data = pd.read_csv("github_repos.csv")
+    return data
+
+def main():
+    st.title("GitHub Repository Analysis")
+    st.sidebar.title("Options")
+
+    data = load_data()
+
+    # Sidebar options
+    analysis_option = st.sidebar.selectbox("Select Analysis", ["Yearly Trends", "Quarterly Trends", "Regression Analysis"])
+    if analysis_option == "Yearly Trends":
+        st.header("Yearly Trends Analysis")
+        yearly_results = analyze_yearly_trends(data)
+        st.write(yearly_results)
+    elif analysis_option == "Quarterly Trends":
+        st.header("Quarterly Trends Analysis")
+        quarterly_results = analyze_quarterly_trends(data)
+        st.write(quarterly_results)
+    elif analysis_option == "Regression Analysis":
+        st.header("Regression Analysis")
+        regression_results = perform_regression_analysis(data)
+        st.write(regression_results)
+
+    # Additional analysis
+    st.header("Additional Analysis")
+    repositories = data.to_dict('records')  # Convert DataFrame to list of dictionaries
+    avg_stars = calculate_average_stars(repositories)
+    most_popular_language = find_most_popular_language(repositories)
+    total_forks = calculate_total_forks(repositories)
+    language_counts = count_repositories_by_language(repositories)
+
+    st.write(f"Average Stars: {avg_stars}")
+    st.write(f"Most Popular Language: {most_popular_language}")
+    st.write(f"Total Forks: {total_forks}")
+    st.write("Repository Counts by Language:")
+    st.write(language_counts)
+
+    # Data visualization
+    st.header("Data Visualization")
+
+    # Plot repository stats
+    st.subheader("Repository Stats")
+    plot_repository_stats(repositories)
+
+    # Fetch GitHub user info and repositories
+    username = st.text_input("Enter GitHub username")
+    user_info = fetch_github_user_info(username)
+    if user_info:
+        st.subheader("GitHub User Info")
+        st.write(user_info)
+        
+        st.subheader("GitHub User Repositories")
+        user_repos = fetch_user_repositories(username)
+        if user_repos:
+            st.write(user_repos)
+        else:
+            st.write("No repositories found for this user.")
+
+        # Visualize most used languages by the user
+        st.subheader("Most Used Languages")
+        most_used_languages = [('Python', 50), ('JavaScript', 30), ('Java', 20), ('C++', 15)]  # Example data
+        visualize_most_used_languages(username, most_used_languages)
 
 def plot_repository_stats(repositories):
     """
@@ -61,67 +108,5 @@ def plot_repository_stats(repositories):
     plt.tight_layout()
     plt.show()
 
-def fetch_github_user_info(username):
-    """
-    Fetches information about a GitHub user.
-    
-    Args:
-        username (str): The GitHub username.
-    
-    Returns:
-        dict: A dictionary containing information about the GitHub user.
-    """
-    url = f'https://api.github.com/users/{username}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Failed to fetch user information. Status code: {response.status_code}")
-        return {}
-
-def fetch_user_repositories(username, per_page=10):
-    """
-    Fetches repositories owned by a GitHub user.
-    
-    Args:
-        username (str): The GitHub username.
-        per_page (int): Optional. The number of repositories per page (default: 10).
-    
-    Returns:
-        list: A list of dictionaries containing information about the user's repositories.
-    """
-    url = f'https://api.github.com/users/{username}/repos?per_page={per_page}'
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Failed to fetch user repositories. Status code: {response.status_code}")
-        return []
-
-def visualize_most_used_languages(username, most_used_languages):
-    """
-    Visualizes the most used programming languages by a GitHub user.
-    
-    Args:
-        username (str): GitHub username.
-        most_used_languages (list): List of tuples containing language and its usage count.
-    """
-    languages, counts = zip(*most_used_languages)
-    plt.figure(figsize=(10, 6))
-    plt.bar(languages, counts, color='skyblue')
-    plt.xlabel('Programming Language')
-    plt.ylabel('Usage Count')
-    plt.title(f'Most Used Languages by {username}')
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-    plt.show()
-
 if __name__ == "__main__":
-    # Example usage:
-    username = 'your_username_here'  # Replace with your GitHub username
-    repositories = get_most_starred_repositories(language='python', limit=10)
-    plot_repository_stats(repositories)
-    user_info = fetch_github_user_info(username)
-    user_repos = fetch_user_repositories(username)
-    most_used_languages = [('Python', 50), ('JavaScript', 30), ('Java', 20), ('C++', 15)]  # Example data
-    visualize_most_used_languages(username, most_used_languages)
+    main()
