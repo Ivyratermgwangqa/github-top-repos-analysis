@@ -12,8 +12,9 @@ def get_most_starred_repositories(language='python', limit=10):
         list: A list of dictionaries containing information about the most starred repositories.
     """
     url = f'https://api.github.com/search/repositories?q=language:{language}&sort=stars&order=desc&per_page={limit}'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         data = response.json()
         repositories = []
         for item in data['items']:
@@ -28,8 +29,8 @@ def get_most_starred_repositories(language='python', limit=10):
             }
             repositories.append(repository)
         return repositories
-    else:
-        print(f"Failed to fetch repositories. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch repositories: {e}")
         return []
 
 def fetch_github_repositories(language='python', num_repos=10):
@@ -44,8 +45,9 @@ def fetch_github_repositories(language='python', num_repos=10):
         list: A list of dictionaries containing information about the fetched repositories.
     """
     url = f'https://api.github.com/search/repositories?q=language:{language}&per_page={num_repos}'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         data = response.json()
         repositories = []
         for item in data['items']:
@@ -60,8 +62,8 @@ def fetch_github_repositories(language='python', num_repos=10):
             }
             repositories.append(repository)
         return repositories
-    else:
-        print(f"Failed to fetch repositories. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch repositories: {e}")
         return []
 
 def get_most_used_languages(username):
@@ -75,8 +77,9 @@ def get_most_used_languages(username):
         list: A list of tuples containing the most used languages and their usage count.
     """
     url = f'https://api.github.com/users/{username}/repos'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         repos = response.json()
         languages = {}
         for repo in repos:
@@ -84,8 +87,8 @@ def get_most_used_languages(username):
             if lang:
                 languages[lang] = languages.get(lang, 0) + 1
         return sorted(languages.items(), key=lambda x: x[1], reverse=True)
-    else:
-        print(f"Failed to fetch user repositories. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch user repositories: {e}")
         return []
 
 def fetch_github_user_info(username):
@@ -99,11 +102,12 @@ def fetch_github_user_info(username):
         dict: A dictionary containing information about the GitHub user.
     """
     url = f'https://api.github.com/users/{username}'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         return response.json()
-    else:
-        print(f"Failed to fetch user information for {username}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch user information for {username}: {e}")
         return {}
 
 def fetch_repository_info(owner, repo_name):
@@ -118,11 +122,12 @@ def fetch_repository_info(owner, repo_name):
         dict: A dictionary containing information about the GitHub repository.
     """
     url = f'https://api.github.com/repos/{owner}/{repo_name}'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         return response.json()
-    else:
-        print(f"Failed to fetch repository information for {owner}/{repo_name}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch repository information for {owner}/{repo_name}: {e}")
         return {}
 
 def fetch_repo_issues(owner, repo_name, state='open', per_page=10):
@@ -140,11 +145,12 @@ def fetch_repo_issues(owner, repo_name, state='open', per_page=10):
     """
     url = f'https://api.github.com/repos/{owner}/{repo_name}/issues'
     params = {'state': state, 'per_page': per_page}
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         return response.json()
-    else:
-        print(f"Failed to fetch repository issues for {owner}/{repo_name}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch repository issues for {owner}/{repo_name}: {e}")
         return []
 
 def fetch_repo_contributors(owner, repo_name):
@@ -159,11 +165,12 @@ def fetch_repo_contributors(owner, repo_name):
         list: A list of dictionaries containing information about the repository contributors.
     """
     url = f'https://api.github.com/repos/{owner}/{repo_name}/contributors'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         return response.json()
-    else:
-        print(f"Failed to fetch repository contributors for {owner}/{repo_name}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch repository contributors for {owner}/{repo_name}: {e}")
         return []
 
 def fetch_user_details(username):
@@ -177,11 +184,12 @@ def fetch_user_details(username):
         dict: A dictionary containing details of the GitHub user.
     """
     url = f'https://api.github.com/users/{username}'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         return response.json()
-    else:
-        print(f"Failed to fetch user details for {username}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch user details for {username}: {e}")
         return {}
 
 def fetch_repository_details(owner, repo_name):
@@ -196,11 +204,12 @@ def fetch_repository_details(owner, repo_name):
         dict: A dictionary containing details of the GitHub repository.
     """
     url = f'https://api.github.com/repos/{owner}/{repo_name}'
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for non-2xx status codes
         return response.json()
-    else:
-        print(f"Failed to fetch repository details for {owner}/{repo_name}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Failed to fetch repository details for {owner}/{repo_name}: {e}")
         return {}
 
 if __name__ == "__main__":
