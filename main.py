@@ -38,6 +38,9 @@ def load_data():
     # Load your data here or use a sample DataFrame for testing
     data = pd.read_csv("github_repos.csv")
     
+    # Convert 'Date' column to datetime format
+    data['Date'] = pd.to_datetime(data['Date'])
+    
     # Add current date column
     data['Date'] = current_date
     
