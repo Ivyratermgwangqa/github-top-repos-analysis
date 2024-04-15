@@ -101,7 +101,7 @@ def helper_function():
 
 def calculate_average_stars(repositories):
     """
-    Calculates the average number of stars across all repositories.
+    Calculate the average number of stars across all repositories.
     
     Args:
         repositories (list): A list of dictionaries containing information about GitHub repositories.
@@ -109,8 +109,22 @@ def calculate_average_stars(repositories):
     Returns:
         float: The average number of stars.
     """
-    total_stars = sum(repo['stars'] for repo in repositories)
-    return total_stars / len(repositories)
+    total_stars = 0
+    num_repositories = 0
+    
+    # Check if 'stars' key exists in each repository
+    for repo in repositories:
+        if 'stars' in repo:
+            total_stars += repo['stars']
+            num_repositories += 1
+    
+    # Calculate average stars
+    if num_repositories > 0:
+        average_stars = total_stars / num_repositories
+    else:
+        average_stars = 0
+    
+    return average_stars
 
 def find_most_popular_language(repositories):
     """
