@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from github_data import get_most_starred_repositories, get_most_used_languages
+from github_data import get_most_starred_repositories
 from analysis import (
     analyze_yearly_trends,
     analyze_quarterly_trends,
@@ -12,6 +12,9 @@ from analysis import (
     count_repositories_by_language,
     conduct_volatility_analysis
 )
+import matplotlib
+matplotlib.use('Agg')  # Set the backend to Agg
+import matplotlib.pyplot as plt
 
 def load_data():
     """
