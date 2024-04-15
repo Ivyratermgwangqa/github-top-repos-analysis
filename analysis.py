@@ -3,6 +3,38 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
+from langdetect import detect
+
+# Sample data
+data = [
+    {'Name': 'streamlit', 'Description': 'The fastest way to build and share data apps', 'Stars': 15000, 'Forks': 2500, 'Watchers': 20000, 'Issues': 300, 'URL': 'https://github.com/streamlit/streamlit', 'Date': '2024-04-15'},
+    {'Name': 'pytorch', 'Description': 'Deep learning framework for fast flexible experimentation', 'Stars': 35000, 'Forks': 5000, 'Watchers': 40000, 'Issues': 500, 'URL': 'https://github.com/pytorch/pytorch', 'Date': '2024-04-15'},
+    {'Name': 'tensorflow', 'Description': 'An open-source machine learning framework', 'Stars': 50000, 'Forks': 8000, 'Watchers': 60000, 'Issues': 1000, 'URL': 'https://github.com/tensorflow/tensorflow', 'Date': '2024-04-15'},
+    {'Name': 'keras', 'Description': 'Deep Learning for humans', 'Stars': 25000, 'Forks': 4000, 'Watchers': 30000, 'Issues': 400, 'URL': 'https://github.com/keras-team/keras', 'Date': '2024-04-15'},
+    {'Name': 'scikit-learn', 'Description': 'Simple and efficient tools for predictive data analysis', 'Stars': 20000, 'Forks': 3000, 'Watchers': 25000, 'Issues': 200, 'URL': 'https://github.com/scikit-learn/scikit-learn', 'Date': '2024-04-15'},
+    {'Name': 'matplotlib', 'Description': 'A Python 2D plotting library', 'Stars': 18000, 'Forks': 2000, 'Watchers': 22000, 'Issues': 150, 'URL': 'https://github.com/matplotlib/matplotlib', 'Date': '2024-04-15'},
+    {'Name': 'pandas', 'Description': 'Powerful data structures for data manipulation and analysis', 'Stars': 22000, 'Forks': 3500, 'Watchers': 27000, 'Issues': 250, 'URL': 'https://github.com/pandas-dev/pandas', 'Date': '2024-04-15'},
+    {'Name': 'numpy', 'Description': 'The fundamental package for scientific computing with Python', 'Stars': 25000, 'Forks': 4000, 'Watchers': 30000, 'Issues': 300, 'URL': 'https://github.com/numpy/numpy', 'Date': '2024-04-15'}
+]
+
+# Convert data to DataFrame
+df = pd.DataFrame(data)
+
+# Function to detect language from description
+def detect_language(description):
+    try:
+        return detect(description)
+    except:
+        return 'Unknown'
+
+# Add 'Language' column based on 'Description'
+df['Language'] = df['Description'].apply(detect_language)
+
+# Print the modified DataFrame
+print(df)
+
+# Save the DataFrame to a CSV file
+df.to_csv('github_data_with_language.csv', index=False)
 
 def analyze_yearly_trends(data):
     """
