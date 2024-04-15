@@ -1,4 +1,3 @@
-```markdown
 # GitHub Top Repositories Analysis
 
 Welcome to the GitHub Top Repositories Analysis project! This project offers a comprehensive analysis of the most popular repositories on GitHub, providing insights into trending repositories, popular programming languages, and contributor activity. The analysis is presented through interactive visualizations and descriptive statistics.
