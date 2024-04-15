@@ -90,27 +90,27 @@ def main():
             volatility_results = conduct_volatility_analysis(data)
             st.write(volatility_results)
 
+        # Additional analysis
+        st.header("Additional Analysis")
+        if not data.empty:
+            repositories = data.to_dict('records')  # Convert DataFrame to list of dictionaries
+            avg_stars = calculate_average_stars(repositories)
+            most_popular_language = find_most_popular_language(repositories)
+            total_forks = calculate_total_forks(repositories)
+            language_counts = count_repositories_by_language(repositories)
+
+            st.write(f"Average Stars: {avg_stars}")
+            st.write(f"Most Popular Language: {most_popular_language}")
+            st.write(f"Total Forks: {total_forks}")
+            st.write("Repository Counts by Language:")
+            st.write(language_counts)
+        else:
+            st.write("No data available for additional analysis.")
+
     elif choice == "About":
         st.subheader("About Page")
         st.write("This app is created to analyze GitHub repositories.")
         # Add more content for the About page
-
-    # Additional analysis
-    st.header("Additional Analysis")
-    if not data.empty:
-        repositories = data.to_dict('records')  # Convert DataFrame to list of dictionaries
-        avg_stars = calculate_average_stars(repositories)
-        most_popular_language = find_most_popular_language(repositories)
-        total_forks = calculate_total_forks(repositories)
-        language_counts = count_repositories_by_language(repositories)
-
-        st.write(f"Average Stars: {avg_stars}")
-        st.write(f"Most Popular Language: {most_popular_language}")
-        st.write(f"Total Forks: {total_forks}")
-        st.write("Repository Counts by Language:")
-        st.write(language_counts)
-    else:
-        st.write("No data available for additional analysis.")
 
 if __name__ == "__main__":
     main()
