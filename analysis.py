@@ -134,7 +134,7 @@ def find_most_popular_language(repositories):
         repositories (list): A list of dictionaries containing information about GitHub repositories.
     
     Returns:
-        str: The most popular programming language.
+        str: The most popular programming language, or "Unknown" if no language information is found.
     """
     language_counts = {}
     
@@ -148,7 +148,10 @@ def find_most_popular_language(repositories):
                 language_counts[language] = 1
     
     # Find the most popular language
-    most_popular_language = max(language_counts, key=language_counts.get)
+    if language_counts:
+        most_popular_language = max(language_counts, key=language_counts.get)
+    else:
+        most_popular_language = "Unknown"
     
     return most_popular_language
 
