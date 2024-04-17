@@ -28,6 +28,9 @@ from github_data_visualization import (
     visualize_top_languages
 )
 
+# Disable the PyplotGlobalUseWarning
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 def load_data():
     """
     Load sample GitHub repository data.
