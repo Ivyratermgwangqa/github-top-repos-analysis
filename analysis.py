@@ -1,8 +1,14 @@
 # analysis.py
 import pandas as pd
+from langdetect import detect
 from sklearn.linear_model import LinearRegression
 import numpy as np
-from langdetect import detect
+
+def detect_language(description):
+    try:
+        return detect(description)
+    except:
+        return 'Unknown'
 
 # Sample data
 data = [
@@ -17,23 +23,16 @@ data = [
 ]
 
 # Convert data to DataFrame
-df = pd.DataFrame(data)
+    df = pd.DataFrame(data)
 
-def detect_language(description):
-    try:
-        return detect(description)
-    except:
-        return 'Unknown'
+    # Add 'Language' column based on 'Description'
+    df['Language'] = df['Description'].apply(detect_language)
 
-# Add 'Language' column based on 'Description'
-df['Language'] = df['Description'].apply(detect_language)
+    # Print the modified DataFrame
+    print(df)
 
-
-# Print the modified DataFrame
-print(df)
-
-# Save the DataFrame to a CSV file
-df.to_csv('github_data_with_language.csv', index=False)
+    # Save the DataFrame to a CSV file
+    df.to_csv('github_data_with_language.csv', index=False)
 
 def analyze_yearly_trends(data):
     """
