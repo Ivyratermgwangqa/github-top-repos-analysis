@@ -1,9 +1,9 @@
-Name,Description,Stars,Forks,Watchers,Issues,URL,Date
-streamlit,The fastest way to build and share data apps,15000,2500,20000,300,https://github.com/streamlit/streamlit,2024-04-15
-pytorch,Deep learning framework for fast flexible experimentation,35000,5000,40000,500,https://github.com/pytorch/pytorch,2024-04-15
-tensorflow,An open-source machine learning framework,50000,8000,60000,1000,https://github.com/tensorflow/tensorflow,2024-04-15
-keras,Deep Learning for humans,25000,4000,30000,400,https://github.com/keras-team/keras,2024-04-15
-scikit-learn,Simple and efficient tools for predictive data analysis,20000,3000,25000,200,https://github.com/scikit-learn/scikit-learn,2024-04-15
-matplotlib,A Python 2D plotting library,18000,2000,22000,150,https://github.com/matplotlib/matplotlib,2024-04-15
-pandas,Powerful data structures for data manipulation and analysis,22000,3500,27000,250,https://github.com/pandas-dev/pandas,2024-04-15
-numpy,The fundamental package for scientific computing with Python,25000,4000,30000,300,https://github.com/numpy/numpy,2024-04-15
+Name,Description,Stars,Forks,Watchers,Issues,URL,Date,Language
+streamlit,The fastest way to build and share data apps,15000,2500,20000,300,https://github.com/streamlit/streamlit,2024-04-15,Python
+pytorch,Deep learning framework for fast flexible experimentation,35000,5000,40000,500,https://github.com/pytorch/pytorch,2024-04-15,Python
+tensorflow,An open-source machine learning framework,50000,8000,60000,1000,https://github.com/tensorflow/tensorflow,2024-04-15,Python
+keras,Deep Learning for humans,25000,4000,30000,400,https://github.com/keras-team/keras,2024-04-15,Python
+scikit-learn,Simple and efficient tools for predictive data analysis,20000,3000,25000,200,https://github.com/scikit-learn/scikit-learn,2024-04-15,Python
+matplotlib,A Python 2D plotting library,18000,2000,22000,150,https://github.com/matplotlib/matplotlib,2024-04-15,Python
+pandas,Powerful data structures for data manipulation and analysis,22000,3500,27000,250,https://github.com/pandas-dev/pandas,2024-04-15,Python
+numpy,The fundamental package for scientific computing with Python,25000,4000,30000,300,https://github.com/numpy/numpy,2024-04-15,Python
