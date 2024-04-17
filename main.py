@@ -91,7 +91,10 @@ def main():
         # Add content for the Analysis page
         analysis_options = ["Yearly Trends", "Quarterly Trends", "Regression Analysis", "Volatility Analysis"]  # Update analysis options
         analysis_choice = st.sidebar.selectbox("Select Analysis Option", analysis_options)
-
+        
+        # Get user input for programming language
+        language = st.sidebar.text_input("Enter programming language", "python")
+        
         data = load_data()
 
         if analysis_choice == "Yearly Trends":
