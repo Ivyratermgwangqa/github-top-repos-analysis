@@ -132,19 +132,20 @@ def main():
             
             # Visualize additional analysis
             st.subheader("Additional Analysis Visualizations")
-            visualize_language_distribution(data)
-            visualize_stars_vs_forks(data)
-            visualize_repo_stats(data)
-            visualize_correlation_matrix(data)
-            visualize_repo_distribution_by_owner(data)
-            visualize_repo_stars_distribution(data)
-            visualize_repo_watchers_vs_stars(data)
-            visualize_repo_issues_vs_stars(data)
-            visualize_avg_stars_by_language(data)
-            visualize_top_languages(data)
+            with st.echo():
+                visualize_language_distribution(data)
+                visualize_stars_vs_forks(data)
+                visualize_repo_stats(data)
+                visualize_correlation_matrix(data)
+                visualize_repo_distribution_by_owner(data)
+                visualize_repo_stars_distribution(data)
+                visualize_repo_watchers_vs_stars(data)
+                visualize_repo_issues_vs_stars(data)
+                visualize_avg_stars_by_language(data)
+                visualize_top_languages(data)
         else:
             st.write("No data available for additional analysis.")
-
+        
     elif choice == "About":
         st.subheader("About Page")
         st.write("This app is created to analyze GitHub repositories.")
