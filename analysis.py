@@ -244,28 +244,23 @@ def count_repositories_by_language(repositories):
 # You can add more analysis functions as needed
 
 if __name__ == "__main__":
-    # Example usage:
-    repositories = [
-        {'name': 'repo1', 'stars': 100, 'language': 'Python'},
-        {'name': 'repo2', 'stars': 200, 'language': 'JavaScript'},
-        {'name': 'repo3', 'stars': 150, 'language': 'Python'}
-    ]
-    avg_stars = calculate_average_stars(repositories)
-    most_popular_language = find_most_popular_language(repositories)
+    # Example usage with the DataFrame 'data'
+    avg_stars = calculate_average_stars(data)
+    most_popular_language = find_most_popular_language(data)
     print(f"Average stars: {avg_stars}")
     print(f"Most popular language: {most_popular_language}")
-    total_forks = calculate_total_forks(repositories)
+    total_forks = calculate_total_forks(data)
     print(f"Total forks: {total_forks}")
     
-    language_counts = count_repositories_by_language(repositories)
+    language_counts = count_repositories_by_language(data)
     print("Repository counts by language:")
     for language, count in language_counts.items():
         print(f"{language}: {count}")
         
     # Check if 'Language' column exists and print value counts if it does
     print("\nChecking 'Language' column:")
-    if 'Language' in df.columns:
-        language_counts = df['Language'].value_counts()
+    if 'Language' in data.columns:
+        language_counts = data['Language'].value_counts()
         print(language_counts)
     else:
         print("Error: 'Language' column not found.")
