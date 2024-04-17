@@ -262,3 +262,11 @@ if __name__ == "__main__":
     print("Repository counts by language:")
     for language, count in language_counts.items():
         print(f"{language}: {count}")
+        
+    # Check if 'Language' column exists and print value counts if it does
+    print("\nChecking 'Language' column:")
+    if 'Language' in df.columns:
+        language_counts = df['Language'].value_counts()
+        print(language_counts)
+    else:
+        print("Error: 'Language' column not found.")
