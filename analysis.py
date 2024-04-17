@@ -23,16 +23,16 @@ data = [
 ]
 
 # Convert data to DataFrame
-    df = pd.DataFrame(data)
+df = pd.DataFrame(data)
 
-    # Add 'Language' column based on 'Description'
-    df['Language'] = df['Description'].apply(detect_language)
+# Add 'Language' column based on 'Description'
+df['Language'] = df['Description'].apply(detect_language)
 
-    # Print the modified DataFrame
-    print(df)
+# Print the modified DataFrame
+print(df)
 
-    # Save the DataFrame to a CSV file
-    df.to_csv('github_data_with_language.csv', index=False)
+# Save the DataFrame to a CSV file
+df.to_csv('github_data_with_language.csv', index=False)
 
 def analyze_yearly_trends(data):
     """
