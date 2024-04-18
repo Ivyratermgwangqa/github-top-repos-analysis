@@ -44,6 +44,23 @@ def visualize_repo_distribution_by_owner(data, language):
     plt.xticks(rotation=45, ha='right')
     st.pyplot()
 
+ # Get repositories for the specified language and owner
+    repositories = get_most_starred_repositories(language, github_username)
+
+    # Display repositories
+    if repositories:
+        st.subheader(f"GitHub Repositories Distribution for {github_username}")
+        for repo in repositories:
+            st.write(f"Name: {repo['name']}")
+            st.write(f"Description: {repo['description']}")
+            st.write(f"Stars: {repo['stars']}")
+            st.write(f"Forks: {repo['forks']}")
+            st.write(f"Watchers: {repo['watchers']}")
+            st.write(f"Issues: {repo['issues']}")
+            st.write("---")
+    else:
+        st.write("No repositories found.")
+        
 def visualize_language_distribution(data, language):
     """
     Visualize the distribution of programming languages in GitHub repositories.
