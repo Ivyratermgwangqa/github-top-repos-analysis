@@ -1,7 +1,54 @@
+# github_data_visualization.
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from github import Github  # Add this import
+
+# Function to fetch repository owner information
+def fetch_owner(username, repository):
+    """
+    Fetch the owner of a GitHub repository.
+
+    Args:
+        username (str): The GitHub username or access token.
+        repository (str): The name of the repository in the format "username/repository".
+
+    Returns:
+        str: The owner of the repository.
+    """
+    g = Github(username)
+    repo = g.get_repo(repository)
+    return repo.owner.login
+
+# Function to visualize the distribution of GitHub repositories by owner
+def visualize_repo_distribution_by_owner(data, language, github_username):
+    """
+    Visualize the distribution of GitHub repositories by owner.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+        language (str): The programming language to filter repositories.
+        github_username (str): Your GitHub username or access token.
+    """
+    language_data = data[data['Language'].str.lower() == language.lower()]
+    
+    # Check if there are repositories for the selected language
+    if language_data.empty:
+        st.write(f"No repositories found for {language.capitalize()}")
+    else:
+        # Fetch owner information for each repository
+        language_data['Owner'] = language_data.apply(lambda row: fetch_owner(github_username, row['URL']), axis=1)
+        
+        # Visualize distribution by owner
+        owner_counts = language_data['Owner'].value_counts().head(10)
+        plt.figure(figsize=(10, 6))
+        owner_counts.plot(kind='bar')
+        plt.xlabel('Repository Owner')
+        plt.ylabel('Number of Repositories')
+        plt.title(f'Distribution of GitHub Repositories by Owner (Top 10) for {language.capitalize()}')
+        plt.xticks(rotation=45, ha='right')
+        st.pyplot()
 
 def visualize_language_distribution(data, language):
     """
