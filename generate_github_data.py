@@ -20,6 +20,8 @@ def fetch_owner(url):
         print(f"Failed to fetch owner for {url}: {e}")
         return None
 
+import pandas as pd
+
 # Sample data
 data = {
     'Repository Name': ['project1', 'project2', 'project3'],
@@ -28,16 +30,18 @@ data = {
     'Forks': [50, 100, 80],
     'Watchers': [80, 120, 90],
     'Issues': [10, 20, 15],
-    'URL': ['https://github.com/user/project1', 'https://github.com/user/project2', 'https://github.com/user/project3'],
+    'URL': [],
     'Date': ['2023-01-01', '2023-01-02', '2023-01-03'],
     'Language': ['Python', 'JavaScript', 'Java']
 }
 
+# Prompt the user to enter URLs
+for i in range(len(data['Repository Name'])):
+    url = input(f"Enter the URL for project {i+1}: ")
+    data['URL'].append(url)
+
 # Create DataFrame
 df = pd.DataFrame(data)
-
-# Fetch owner information for each repository
-df['Owner'] = df['URL'].apply(fetch_owner)
 
 # Save DataFrame to CSV
 df.to_csv('github_data.csv', index=False)
