@@ -29,7 +29,22 @@ def visualize_language_distribution(data, language):
         plt.title(f'Number of Repositories for {language.capitalize()}')
         st.pyplot()
 
-# Define other visualization functions with similar modifications to accept the language argument and filter the data based on it.
+def visualize_stars_vs_forks(data, language):
+    """
+    Visualize the relationship between the number of stars and forks for GitHub repositories.
+
+    Args:
+        data (pd.DataFrame): DataFrame containing GitHub repository data.
+        language (str): The programming language to filter repositories.
+    """
+    language_data = data[data['Language'].str.lower() == language.lower()]
+
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='Stars', y='Forks', data=language_data)
+    plt.xlabel('Stars')
+    plt.ylabel('Forks')
+    plt.title(f'Number of Forks vs. Stars for {language.capitalize()} Repositories')
+    st.pyplot()
 
 def visualize_repo_stats(data, language):
     """
