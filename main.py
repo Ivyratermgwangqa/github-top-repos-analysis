@@ -1,11 +1,8 @@
+# main.py
 import streamlit as st
 import pandas as pd
 from datetime import datetime
 from github_data import get_most_starred_repositories
-# main.py
-
-import streamlit as st
-import pandas as pd
 from github_data_visualization import visualize_repo_distribution_by_owner
 
 # Load GitHub repository data
