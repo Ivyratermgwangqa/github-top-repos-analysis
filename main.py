@@ -85,7 +85,7 @@ def main():
     github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
 
     # Visualize distribution of GitHub repositories by owner
-    visualize_repo_distribution_by_owner(data, language, github_username)
+    visualize_repo_distribution_by_owner(data, language)
     
     # Visualization options
     visualization_options = [
