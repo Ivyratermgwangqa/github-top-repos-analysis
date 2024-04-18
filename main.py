@@ -113,49 +113,49 @@ def main():
     # Handle navigation to the About page
     if "About" in selected_visualizations:
         about_page()
-
-elif choice == "Home":
-    st.write("Welcome to the Home page.")
     
-    st.header("Introduction to the App")
-    st.write("This Streamlit app analyzes GitHub repositories. Explore the navigation sidebar to access different features and analysis options.")
+    elif choice == "Home":
+        st.write("Welcome to the Home page.")
+    
+        st.header("Introduction to the App")
+        st.write("This Streamlit app analyzes GitHub repositories. Explore the navigation sidebar to access different features and analysis options.")
 
-    st.header("Recent Updates")
-    st.write("Check out the latest updates to the app:")
-    st.write("- Improved visualization performance.")
-    st.write("- Added new analysis options.")
-    st.write("- Enhanced user interface.")
+        st.header("Recent Updates")
+        st.write("Check out the latest updates to the app:")
+        st.write("- Improved visualization performance.")
+        st.write("- Added new analysis options.")
+        st.write("- Enhanced user interface.")
 
-    st.header("Tutorial or Getting Started Guide")
-    st.write("New to the app? Follow this guide to get started:")
-    st.write("1. Choose a programming language from the sidebar.")
-    st.write("2. Explore the 'Top Repositories' section to discover popular GitHub projects.")
-    st.write("3. Dive into detailed analysis using the 'Analysis' section.")
-    st.write("4. Learn more about the app features in the 'About' section.")
+        st.header("Tutorial or Getting Started Guide")
+        st.write("New to the app? Follow this guide to get started:")
+        st.write("1. Choose a programming language from the sidebar.")
+        st.write("2. Explore the 'Top Repositories' section to discover popular GitHub projects.")
+        st.write("3. Dive into detailed analysis using the 'Analysis' section.")
+        st.write("4. Learn more about the app features in the 'About' section.")
 
-    st.header("Featured Analysis")
-    st.write("Discover interesting insights from GitHub repository data:")
-    st.write("- Trending programming languages.")
-    st.write("- Most starred repositories.")
-    st.write("- Correlation between stars and forks.")
+        st.header("Featured Analysis")
+        st.write("Discover interesting insights from GitHub repository data:")
+        st.write("- Trending programming languages.")
+        st.write("- Most starred repositories.")
+        st.write("- Correlation between stars and forks.")
 
-    st.header("Feedback Form")
-    st.write("We value your feedback! Share your thoughts and suggestions:")
-    feedback_form = st.text_area("Enter your feedback here:")
-    submit_button = st.button("Submit Feedback")
-    if submit_button:
-        st.write("Thank you for your feedback!")
-
-    st.header("Links to External Resources")
-    st.write("Explore more resources related to GitHub repositories and data analysis:")
-    st.write("- [GitHub API Documentation](https://developer.github.com/v3/)")
-    st.write("- [Pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html)")
-    st.write("- [Streamlit Documentation](https://docs.streamlit.io/en/stable/index.html)")
-
-    st.header("Contact Information")
-    st.write("Need assistance? Contact us:")
-    st.write("- Email: contact@example.com")
-    st.write("- Twitter: @example_handle")
+        st.header("Feedback Form")
+        st.write("We value your feedback! Share your thoughts and suggestions:")
+        feedback_form = st.text_area("Enter your feedback here:")
+        submit_button = st.button("Submit Feedback")
+        if submit_button:
+            st.write("Thank you for your feedback!")
+            
+            st.header("Links to External Resources")
+            st.write("Explore more resources related to GitHub repositories and data analysis:")
+            st.write("- [GitHub API Documentation](https://developer.github.com/v3/)")
+            st.write("- [Pandas User Guide](https://pandas.pydata.org/docs/user_guide/index.html)")
+            st.write("- [Streamlit Documentation](https://docs.streamlit.io/en/stable/index.html)")
+            
+            st.header("Contact Information")
+            st.write("Need assistance? Contact us:")
+            st.write("- Email: contact@example.com")
+            st.write("- Twitter: @example_handle")
 
 if __name__ == "__main__":
     main()
