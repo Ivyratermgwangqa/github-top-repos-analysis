@@ -14,16 +14,20 @@ def visualize_language_distribution(data, language):
     # Filter repositories by language
     language_data = data[data['Language'].str.lower() == language.lower()]
     
-    # Group repositories by language and count the number of repositories per language
-    language_counts = language_data['Language'].value_counts()
+    # Check if there are repositories for the selected language
+    if language_data.empty:
+        st.write(f"No repositories found for {language.capitalize()}")
+    else:
+        # Group repositories by language and count the number of repositories per language
+        language_counts = language_data['Language'].value_counts()
 
-    # Plot a bar chart
-    plt.figure(figsize=(10, 6))
-    language_counts.plot(kind='bar')
-    plt.xlabel('Language')
-    plt.ylabel('Number of Repositories')
-    plt.title(f'Number of Repositories for {language.capitalize()}')
-    st.pyplot()
+        # Plot a bar chart
+        plt.figure(figsize=(10, 6))
+        language_counts.plot(kind='bar')
+        plt.xlabel('Language')
+        plt.ylabel('Number of Repositories')
+        plt.title(f'Number of Repositories for {language.capitalize()}')
+        st.pyplot()
 
 # Define other visualization functions with similar modifications to accept the language argument and filter the data based on it.
 
