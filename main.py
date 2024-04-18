@@ -33,15 +33,6 @@ st.set_page_config(page_title="GitHub Top Repos Analysis", page_icon=":chart:")
 # Load GitHub repository data
 data = pd.read_csv('github_data.csv')
 
-# Sidebar for selecting programming language
-language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique())
-
-# Sidebar for entering GitHub username or access token
-github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
-
-# Visualize distribution of GitHub repositories by owner
-visualize_repo_distribution_by_owner(data, language)
-
 # Load sample GitHub repository data
 def load_data():
     """
@@ -94,7 +85,7 @@ def main():
     github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
 
     # Visualize distribution of GitHub repositories by owner
-    visualize_repo_distribution_by_owner(github_username, language)
+    visualize_repo_distribution_by_owner(data, language, github_username)
     
     # Visualization options
     visualization_options = [
