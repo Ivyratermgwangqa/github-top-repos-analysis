@@ -55,23 +55,6 @@ def visualize_repo_stats(data, language):
         plt.xticks(rotation=45, ha='right')
         st.pyplot()
 
-def visualize_repo_stats(data, language):
-    """
-    Visualize repository statistics such as stars, forks, watchers, and issues.
-
-    Args:
-        data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
-    """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    plt.figure(figsize=(10, 6))
-    language_data[['Stars', 'Forks', 'Watchers', 'Issues']].plot(kind='bar')
-    plt.xlabel('Repository')
-    plt.ylabel('Count')
-    plt.title(f'GitHub Repository Statistics for {language.capitalize()} Repositories')
-    plt.xticks(rotation=45, ha='right')
-    st.pyplot()
-
 def visualize_yearly_trends(data, language):
     """
     Visualize yearly trends in GitHub repository activity.
