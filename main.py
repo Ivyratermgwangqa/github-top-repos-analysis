@@ -99,22 +99,22 @@ def main():
 
         if analysis_choice == "Yearly Trends":
             st.header("Yearly Trends Analysis")
-            visualize_yearly_trends(data)
+            visualize_yearly_trends(data, language)
             yearly_results = analyze_yearly_trends(data)
             st.write(yearly_results)
         elif analysis_choice == "Quarterly Trends":
             st.header("Quarterly Trends Analysis")
-            visualize_quarterly_trends(data)
+            visualize_quarterly_trends(data, language)
             quarterly_results = analyze_quarterly_trends(data)
             st.write(quarterly_results)
         elif analysis_choice == "Regression Analysis":
             st.header("Regression Analysis")
-            visualize_correlation_matrix(data)
+            visualize_correlation_matrix(data, language)
             regression_results = perform_regression_analysis(data)
             st.write(regression_results)
         elif analysis_choice == "Volatility Analysis":
             st.header("Volatility Analysis")
-            visualize_time_series(data, 'Date')
+            visualize_time_series(data, 'Date', language)
             volatility_results = conduct_volatility_analysis(data)
             st.write(volatility_results)
 
@@ -135,24 +135,36 @@ def main():
             
             # Visualize additional analysis
             st.subheader("Additional Analysis Visualizations")
-            with st.echo():
-                visualize_language_distribution(data)
-                visualize_stars_vs_forks(data)
-                visualize_repo_stats(data)
-                visualize_correlation_matrix(data)
-                visualize_repo_distribution_by_owner(data)
-                visualize_repo_stars_distribution(data)
-                visualize_repo_watchers_vs_stars(data)
-                visualize_repo_issues_vs_stars(data)
-                visualize_avg_stars_by_language(data)
-                visualize_top_languages(data)
+            visualize_language_distribution(data, language)
+            visualize_stars_vs_forks(data, language)
+            visualize_repo_stats(data, language)
+            visualize_repo_distribution_by_owner(data, language)
+            visualize_repo_stars_distribution(data, language)
+            visualize_repo_watchers_vs_stars(data, language)
+            visualize_repo_issues_vs_stars(data, language)
+            visualize_avg_stars_by_language(data)
+            visualize_top_languages(data)
         else:
             st.write("No data available for additional analysis.")
         
-    elif choice == "About":
-        st.subheader("About Page")
-        st.write("This app is created to analyze GitHub repositories.")
-        # Add more content for the About page
+elif choice == "About":
+    st.subheader("About Page")
+    st.write("This Streamlit app is designed for analyzing GitHub repositories. It provides various analysis options and visualizations based on the data obtained from GitHub.")
+
+    st.write("Features:")
+    st.write("- Top Repositories Analysis: Retrieve and display information about the top repositories on GitHub based on programming language.")
+    st.write("- Analysis: Perform different types of analysis such as yearly trends, quarterly trends, regression analysis, and volatility analysis.")
+    st.write("- Additional Analysis: Calculate average stars, find the most popular programming language, count repositories by language, and more.")
+    st.write("- Data Visualization: Visualize the data using various charts and plots.")
+
+    st.write("Technologies Used:")
+    st.write("- Streamlit: Used for building the web application and creating an interactive user interface.")
+    st.write("- Pandas: Utilized for data manipulation and analysis.")
+    st.write("- Matplotlib and Seaborn: Employed for data visualization.")
+    st.write("- GitHub API: Access GitHub repositories data for analysis.")
+    
+    st.write("Created by [Lerato Mgwangqa]")
+    st.write("GitHub Repository: [https://github.com/Ivyratermgwangqa/github-top-repos-analysis.git]")
 
 if __name__ == "__main__":
     main()
