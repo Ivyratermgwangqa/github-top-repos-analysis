@@ -1,22 +1,22 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from github_data import get_most_starred_repositories
-from github_data_visualization import visualize_repo_distribution_by_owner
+from github_data_visualization import (
+    visualize_repo_distribution_by_owner,
+    visualize_language_distribution,
+    visualize_stars_vs_forks,
+    visualize_repo_stats,
+    visualize_yearly_trends,
+    visualize_quarterly_trends,
+    visualize_correlation_matrix,
+    visualize_time_series,
+    visualize_repo_stars_distribution,
+    visualize_repo_watchers_vs_stars,
+    visualize_repo_issues_vs_stars,
+    visualize_avg_stars_by_language,
+    visualize_top_languages
+)
 
-# Load GitHub repository data
-data = pd.read_csv('github_data.csv')
-
-# Sidebar for selecting programming language
-language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique())
-
-# Sidebar for entering GitHub username or access token
-github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
-
-# Visualize distribution of GitHub repositories by owner
-visualize_repo_distribution_by_owner(data, language)
-
-# Load sample GitHub repository data
 def load_data():
     """
     Load sample GitHub repository data.
@@ -78,7 +78,8 @@ def main():
         "Repo Watchers vs Stars",
         "Repo Issues vs Stars",
         "Average Stars by Language",
-        "Top Languages"
+        "Top Languages",
+        "About"
     ]
     selected_visualizations = st.sidebar.multiselect("Select Visualizations", visualization_options)
 
@@ -113,8 +114,8 @@ def main():
     # Handle navigation to the About page
     if "About" in selected_visualizations:
         about_page()
-    
-    elif choice == "Home":
+
+    elif not selected_visualizations:  # If no visualization is selected, show the home page
         st.write("Welcome to the Home page.")
     
         st.header("Introduction to the App")
