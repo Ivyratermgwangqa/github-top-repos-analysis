@@ -2,6 +2,23 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from github_data import get_most_starred_repositories
+# main.py
+
+import streamlit as st
+import pandas as pd
+from github_data_visualization import visualize_repo_distribution_by_owner
+
+# Load GitHub repository data
+data = pd.read_csv('github_data.csv')
+
+# Sidebar for selecting programming language
+language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique())
+
+# Sidebar for entering GitHub username or access token
+github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
+
+# Visualize distribution of GitHub repositories by owner
+visualize_repo_distribution_by_owner(data, language, github_username)
 from analysis import (
     analyze_yearly_trends,
     analyze_quarterly_trends,
