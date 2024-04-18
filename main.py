@@ -1,6 +1,17 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+from github_data import get_most_starred_repositories
+from analysis import (
+    analyze_yearly_trends,
+    analyze_quarterly_trends,
+    perform_regression_analysis,
+    calculate_average_stars,
+    find_most_popular_language,
+    calculate_total_forks,
+    count_repositories_by_language,
+    conduct_volatility_analysis
+)
 from github_data_visualization import (
     visualize_repo_distribution_by_owner,
     visualize_language_distribution,
@@ -16,7 +27,22 @@ from github_data_visualization import (
     visualize_avg_stars_by_language,
     visualize_top_languages
 )
+# Set page title and favicon
+st.set_page_config(page_title="GitHub Top Repos Analysis", page_icon=":chart:")
 
+# Load GitHub repository data
+data = pd.read_csv('github_data.csv')
+
+# Sidebar for selecting programming language
+language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique())
+
+# Sidebar for entering GitHub username or access token
+github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
+
+# Visualize distribution of GitHub repositories by owner
+visualize_repo_distribution_by_owner(data, language)
+
+# Load sample GitHub repository data
 def load_data():
     """
     Load sample GitHub repository data.
@@ -114,6 +140,25 @@ def main():
     # Handle navigation to the About page
     if "About" in selected_visualizations:
         about_page()
+
+    if "Top Repositories" in selected_visualizations:
+        st.title("GitHub Top Repos Analysis")
+        st.subheader("Top Repositories Analysis")
+        language = st.sidebar.text_input("Enter programming language", "python")
+        limit = st.sidebar.slider("Select number of repositories", 1, 100, 10)
+        repositories = get_most_starred_repositories(language, limit)
+        if repositories:
+            st.write("Top Repositories:")
+            for repo in repositories:
+                st.write(f"Name: {repo['name']}")
+                st.write(f"Description: {repo['description']}")
+                st.write(f"Stars: {repo['stars']}")
+                st.write(f"Forks: {repo['forks']}")
+                st.write(f"Watchers: {repo['watchers']}")
+                st.write(f"Issues: {repo['issues']}")
+                st.write("---")
+        else:
+            st.write("No repositories found.")
 
     elif not selected_visualizations:  # If no visualization is selected, show the home page
         st.write("Welcome to the Home page.")
