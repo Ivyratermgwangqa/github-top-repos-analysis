@@ -4,73 +4,61 @@ from langdetect import detect
 from sklearn.linear_model import LinearRegression
 import numpy as np
 
-def analyze_yearly_trends(data, language):
+def analyze_yearly_trends(data):
     """
-    Analyze yearly trends in GitHub repository data for a specific programming language.
+    Analyze yearly trends in GitHub repository data.
     
     Args:
         data (DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to analyze.
     
     Returns:
         dict: A dictionary containing the analysis results.
     """
-    # Filter data by language
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    
     # Extract year from the date column
-    language_data['Year'] = language_data['Date'].dt.year
+    data['Year'] = pd.to_datetime(data['Date']).dt.year
     
     # Group by year and calculate mean stars and forks
-    yearly_stats = language_data.groupby('Year').agg({'Stars': 'mean', 'Forks': 'mean'}).reset_index()
+    yearly_stats = data.groupby('Year').agg({'Stars': 'mean', 'Forks': 'mean'}).reset_index()
     
     # Convert to dictionary
     results = yearly_stats.to_dict(orient='records')
     
     return results
 
-def analyze_quarterly_trends(data, language):
+def analyze_quarterly_trends(data):
     """
-    Analyze quarterly trends in GitHub repository data for a specific programming language.
+    Analyze quarterly trends in GitHub repository data.
     
     Args:
         data (DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to analyze.
     
     Returns:
         dict: A dictionary containing the analysis results.
     """
-    # Filter data by language
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    
     # Extract quarter from the date column
-    language_data['Quarter'] = language_data['Date'].dt.to_period('Q')
+    data['Quarter'] = pd.to_datetime(data['Date']).dt.to_period('Q')
     
     # Group by quarter and calculate median stars and forks
-    quarterly_stats = language_data.groupby('Quarter').agg({'Stars': 'median', 'Forks': 'median'}).reset_index()
+    quarterly_stats = data.groupby('Quarter').agg({'Stars': 'median', 'Forks': 'median'}).reset_index()
     
     # Convert to dictionary
     results = quarterly_stats.to_dict(orient='records')
     
     return results
 
-def perform_regression_analysis(data, language):
+def perform_regression_analysis(data):
     """
-    Perform regression analysis on GitHub repository data for a specific programming language.
+    Perform regression analysis on GitHub repository data.
     
     Args:
         data (DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to analyze.
     
     Returns:
         dict: A dictionary containing the analysis results.
     """
-    # Filter data by language
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    
     # Prepare data for regression analysis
-    X = language_data['Stars'].values.reshape(-1, 1)
-    y = language_data['Forks'].values
+    X = data['Stars'].values.reshape(-1, 1)
+    y = data['Forks'].values
     
     # Create and fit the linear regression model
     model = LinearRegression()
@@ -90,22 +78,18 @@ def perform_regression_analysis(data, language):
     
     return results
 
-def conduct_volatility_analysis(data, language):
+def conduct_volatility_analysis(data):
     """
-    Conduct volatility analysis on GitHub repository data for a specific programming language.
+    Conduct volatility analysis on GitHub repository data.
     
     Args:
         data (DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to analyze.
     
     Returns:
         dict: A dictionary containing the analysis results.
     """
-    # Filter data by language
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    
     # Calculate the standard deviation of stars over time
-    stars_std = language_data['Stars'].std()
+    stars_std = data['Stars'].std()
     
     # Determine if the volatility is high or low based on some threshold
     if stars_std > 100:
