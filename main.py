@@ -37,7 +37,7 @@ data = pd.read_csv('github_data.csv')
 data['Owner'] = data['URL'].apply(lambda url: url.split('/')[3])
 
 # Sidebar for selecting programming language
-language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique())
+language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique(), key="language_selectbox")
 
 # Sidebar for entering GitHub username or access token
 github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
