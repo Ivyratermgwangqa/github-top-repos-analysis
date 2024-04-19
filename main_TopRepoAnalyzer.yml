@@ -1,2 +1,10 @@
-              - name: Azure Login
-                uses: Azure/login@v2.1.0
+- name: Azure Login
+  uses: Azure/login@v2.1.0
+- name: Login to Container Registry
+  uses: docker/login-action@v2
+  with:
+    registry: https://mcr.microsoft.com/
+    username: ${{ IVYRATERMGWANGQA }}  # Replace with your registry username secret
+    password: ${{ secrets.IVYR@TER123}}  # Replace with your registry password secret
+    ecr: auto
+    logout: true
