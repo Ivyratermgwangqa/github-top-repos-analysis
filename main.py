@@ -84,10 +84,39 @@ def main():
         else:
             st.write("No repositories found.")
 
-    elif choice == "Analysis":
+elif choice == "Analysis":
         st.subheader("Analysis Page")
         st.write("Select analysis options from the sidebar.")
-        # Add content for the Analysis page...
+
+        # Add content for the Analysis page
+        analysis_options = ["Yearly Trends", "Quarterly Trends", "Regression Analysis", "Volatility Analysis"]  # Update analysis options
+        analysis_choice = st.sidebar.selectbox("Select Analysis Option", analysis_options)
+        
+        # Get user input for programming language
+        language = st.sidebar.text_input("Enter programming language", "python")
+        
+        data = load_data()
+
+        if analysis_choice == "Yearly Trends":
+            st.header("Yearly Trends Analysis")
+            visualize_yearly_trends(data)
+            yearly_results = analyze_yearly_trends(data)
+            st.write(yearly_results)
+        elif analysis_choice == "Quarterly Trends":
+            st.header("Quarterly Trends Analysis")
+            visualize_quarterly_trends(data)
+            quarterly_results = analyze_quarterly_trends(data)
+            st.write(quarterly_results)
+        elif analysis_choice == "Regression Analysis":
+            st.header("Regression Analysis")
+            visualize_correlation_matrix(data)
+            regression_results = perform_regression_analysis(data)
+            st.write(regression_results)
+        elif analysis_choice == "Volatility Analysis":
+            st.header("Volatility Analysis")
+            visualize_time_series(data, 'Date')
+            volatility_results = conduct_volatility_analysis(data)
+            st.write(volatility_results)
 
     elif choice == "Visualizations":  # Add "Visualizations" option
         st.subheader("Visualization Page")
@@ -203,7 +232,5 @@ def main():
                 st.write("- Matplotlib and Seaborn: Employed for data visualization.")
                 st.write("- GitHub API: Access GitHub repositories data for analysis.")
 
-
 if __name__ == "__main__":
     main()
-
