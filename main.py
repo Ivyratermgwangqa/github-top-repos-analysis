@@ -83,8 +83,8 @@ def main():
                 st.write("---")
         else:
             st.write("No repositories found.")
-
-elif choice == "Analysis":
+        
+    elif choice == "Analysis":
         st.subheader("Analysis Page")
         st.write("Select analysis options from the sidebar.")
 
