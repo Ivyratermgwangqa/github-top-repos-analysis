@@ -1,274 +1,179 @@
-# github_data_visualization.
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from github import Github  # Add this import
 
-# Function to fetch repository owner information
-def fetch_owner(username, repository):
-    """
-    Fetch the owner of a GitHub repository.
-
-    Args:
-        username (str): The GitHub username or access token.
-        repository (str): The name of the repository in the format "username/repository".
-
-    Returns:
-        str: The owner of the repository.
-    """
-    g = Github(username)
-    repo = g.get_repo(repository)
-    return repo.owner.login
-
-# Function to visualize the distribution of GitHub repositories by owner
-def visualize_repo_distribution_by_owner(data, language):
-    """
-    Visualize the distribution of GitHub repositories by owner.
-
-    Args:
-        data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
-    """
-    # Retrieve GitHub username or access token from Streamlit sidebar
-    github_username = st.sidebar.text_input('Enter GitHub Username or Access Token')
-
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    owner_counts = language_data['Owner'].value_counts().head(10)
-
-    plt.figure(figsize=(10, 6))
-    owner_counts.plot(kind='bar')
-    plt.xlabel('Repository Owner')
-    plt.ylabel('Number of Repositories')
-    plt.title(f'Distribution of GitHub Repositories by Owner (Top 10) for {language.capitalize()}')
-    plt.xticks(rotation=45, ha='right')
-    st.pyplot()
-
- # Get repositories for the specified language and owner
-    repositories = get_most_starred_repositories(language, github_username)
-
-    # Display repositories
-    if repositories:
-        st.subheader(f"GitHub Repositories Distribution for {github_username}")
-        for repo in repositories:
-            st.write(f"Name: {repo['name']}")
-            st.write(f"Description: {repo['description']}")
-            st.write(f"Stars: {repo['stars']}")
-            st.write(f"Forks: {repo['forks']}")
-            st.write(f"Watchers: {repo['watchers']}")
-            st.write(f"Issues: {repo['issues']}")
-            st.write("---")
-    else:
-        st.write("No repositories found.")
-        
-def visualize_language_distribution(data, language):
+def visualize_language_distribution(data):
     """
     Visualize the distribution of programming languages in GitHub repositories.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    # Filter repositories by language
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    
-    # Check if there are repositories for the selected language
-    if language_data.empty:
-        st.write(f"No repositories found for {language.capitalize()}")
-    else:
-        # Group repositories by language and count the number of repositories per language
-        language_counts = language_data['Language'].value_counts()
+    # Group repositories by language and count the number of repositories per language
+    language_counts = data['Language'].value_counts()
 
-        # Plot a bar chart
-        plt.figure(figsize=(10, 6))
-        language_counts.plot(kind='bar')
-        plt.xlabel('Language')
-        plt.ylabel('Number of Repositories')
-        plt.title(f'Number of Repositories for {language.capitalize()}')
-        st.pyplot()
+    # Plot a bar chart
+    plt.figure(figsize=(10, 6))
+    language_counts.plot(kind='bar')
+    plt.xlabel('Language')
+    plt.ylabel('Number of Repositories')
+    plt.title('Number of Repositories by Language')
+    st.pyplot()
 
-def visualize_stars_vs_forks(data, language):
+def visualize_stars_vs_forks(data):
     """
-    Visualize the relationship between the number of stars and forks for GitHub repositories.
+    Visualize the relationship between stars and forks in GitHub repositories.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='Stars', y='Forks', data=language_data)
+    plt.scatter(data['Stars'], data['Forks'])
     plt.xlabel('Stars')
     plt.ylabel('Forks')
-    plt.title(f'Number of Forks vs. Stars for {language.capitalize()} Repositories')
+    plt.title('Stars vs Forks')
     st.pyplot()
 
-def visualize_repo_stats(data, language):
+def visualize_repo_stats(data):
     """
     Visualize repository statistics such as stars, forks, watchers, and issues.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    # Filter repositories by language
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    
-    # Check if there are repositories for the selected language
-    if language_data.empty:
-        st.write(f"No repositories found for {language.capitalize()}")
-    else:
-        # Plot a bar chart
-        plt.figure(figsize=(10, 6))
-        language_data[['Stars', 'Forks', 'Watchers', 'Issues']].plot(kind='bar')
-        plt.xlabel('Repository')
-        plt.ylabel('Count')
-        plt.title(f'GitHub Repository Statistics for {language.capitalize()} Repositories')
-        plt.xticks(rotation=45, ha='right')
-        st.pyplot()
+    plt.figure(figsize=(10, 6))
+    data[['Stars', 'Forks', 'Watchers', 'Issues']].plot(kind='bar')
+    plt.xlabel('Repository')
+    plt.ylabel('Count')
+    plt.title('GitHub Repository Statistics')
+    plt.xticks(rotation=45, ha='right')
+    st.pyplot()
 
-def visualize_yearly_trends(data, language):
+def visualize_yearly_trends(data):
     """
     Visualize yearly trends in GitHub repository activity.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    yearly_counts = language_data['Date'].dt.year.value_counts().sort_index()
+    # Group by year and count repositories
+    yearly_counts = data['Date'].dt.year.value_counts().sort_index()
 
     plt.figure(figsize=(10, 6))
     yearly_counts.plot(kind='line', marker='o')
     plt.xlabel('Year')
     plt.ylabel('Number of Repositories')
-    plt.title(f'Yearly Trends in GitHub Repositories for {language.capitalize()}')
+    plt.title('Yearly Trends in GitHub Repositories')
     st.pyplot()
 
-def visualize_quarterly_trends(data, language):
+def visualize_quarterly_trends(data):
     """
     Visualize quarterly trends in GitHub repository activity.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    quarterly_counts = language_data['Date'].dt.to_period('Q').value_counts().sort_index()
+    # Group by quarter and count repositories
+    quarterly_counts = data['Date'].dt.to_period('Q').value_counts().sort_index()
 
     plt.figure(figsize=(10, 6))
     quarterly_counts.plot(kind='line', marker='o')
     plt.xlabel('Quarter')
     plt.ylabel('Number of Repositories')
-    plt.title(f'Quarterly Trends in GitHub Repositories for {language.capitalize()}')
+    plt.title('Quarterly Trends in GitHub Repositories')
     st.pyplot()
 
-def visualize_correlation_matrix(data, language):
+def visualize_correlation_matrix(data):
     """
     Visualize the correlation matrix of numerical features in the GitHub repository data.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    numerical_features = language_data.select_dtypes(include=['int64', 'float64'])
+    numerical_features = data.select_dtypes(include=['int64', 'float64'])
     correlation_matrix = numerical_features.corr()
 
     plt.figure(figsize=(10, 6))
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
-    plt.title(f'Correlation Matrix of Numerical Features for {language.capitalize()} Repositories')
+    plt.title('Correlation Matrix of Numerical Features')
     st.pyplot()
 
-def visualize_repo_distribution_by_owner(data, language):
+def visualize_repo_distribution_by_owner(data):
     """
     Visualize the distribution of GitHub repositories by owner.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    owner_counts = language_data['Owner'].value_counts().head(10)
+    owner_counts = data['Owner'].value_counts().head(10)
 
     plt.figure(figsize=(10, 6))
     owner_counts.plot(kind='bar')
     plt.xlabel('Repository Owner')
     plt.ylabel('Number of Repositories')
-    plt.title(f'Distribution of GitHub Repositories by Owner (Top 10) for {language.capitalize()}')
+    plt.title('Distribution of GitHub Repositories by Owner (Top 10)')
     plt.xticks(rotation=45, ha='right')
     st.pyplot()
 
-def visualize_time_series(data, date_column, language):
+def visualize_time_series(data, date_column):
     """
     Visualize time series data.
 
     Args:
         data (pd.DataFrame): DataFrame containing time series data.
         date_column (str): Name of the date column in the DataFrame.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-    language_data[date_column] = pd.to_datetime(language_data[date_column])
+    data[date_column] = pd.to_datetime(data[date_column])
 
     plt.figure(figsize=(10, 6))
-    plt.plot(language_data[date_column], language_data['Value'])
+    plt.plot(data[date_column], data['Value'])
     plt.xlabel('Date')
     plt.ylabel('Value')
-    plt.title(f'Time Series Data for {language.capitalize()} Repositories')
+    plt.title('Time Series Data')
     plt.xticks(rotation=45, ha='right')
     st.pyplot()
 
-def visualize_repo_stars_distribution(data, language):
+def visualize_repo_stars_distribution(data):
     """
     Visualize the distribution of stars for GitHub repositories.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-
     plt.figure(figsize=(10, 6))
-    sns.histplot(language_data['Stars'], bins=20, kde=True)
+    sns.histplot(data['Stars'], bins=20, kde=True)
     plt.xlabel('Stars')
     plt.ylabel('Frequency')
-    plt.title(f'Distribution of Stars for {language.capitalize()} Repositories')
+    plt.title('Distribution of Stars for GitHub Repositories')
     st.pyplot()
 
-def visualize_repo_watchers_vs_stars(data, language):
+def visualize_repo_watchers_vs_stars(data):
     """
     Visualize the relationship between the number of watchers and stars for GitHub repositories.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='Stars', y='Watchers', data=language_data)
+    sns.scatterplot(x='Stars', y='Watchers', data=data)
     plt.xlabel('Stars')
     plt.ylabel('Watchers')
-    plt.title(f'Number of Watchers vs. Stars for {language.capitalize()} Repositories')
+    plt.title('Number of Watchers vs. Stars for GitHub Repositories')
     st.pyplot()
 
-def visualize_repo_issues_vs_stars(data, language):
+def visualize_repo_issues_vs_stars(data):
     """
     Visualize the relationship between the number of issues and stars for GitHub repositories.
 
     Args:
         data (pd.DataFrame): DataFrame containing GitHub repository data.
-        language (str): The programming language to filter repositories.
     """
-    language_data = data[data['Language'].str.lower() == language.lower()]
-
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='Stars', y='Issues', data=language_data)
+    sns.scatterplot(x='Stars', y='Issues', data=data)
     plt.xlabel('Stars')
     plt.ylabel('Issues')
-    plt.title(f'Number of Issues vs. Stars for {language.capitalize()} Repositories')
+    plt.title('Number of Issues vs. Stars for GitHub Repositories')
     st.pyplot()
 
 def visualize_avg_stars_by_language(data):
@@ -303,29 +208,3 @@ def visualize_top_languages(data, n=5):
     plt.title(f'Top {n} Programming Languages in GitHub Repositories')
     plt.xticks(rotation=45, ha='right')
     st.pyplot()
-
-def main():
-    # Load GitHub repository data
-    data = pd.read_csv('github_data.csv')
-
-    # Sidebar for selecting programming language
-    language = st.sidebar.selectbox('Select Programming Language', data['Language'].unique())
-
-    # Visualizations based on selected programming language
-    visualize_language_distribution(data, language)
-    visualize_stars_vs_forks(data, language)
-    visualize_repo_stats(data, language)
-    visualize_yearly_trends(data, language)
-    visualize_quarterly_trends(data, language)
-    visualize_correlation_matrix(data, language)
-    visualize_repo_distribution_by_owner(data, language)
-    visualize_time_series(data, 'Date', language)
-    visualize_repo_stars_distribution(data, language)
-    visualize_repo_watchers_vs_stars(data, language)
-    visualize_repo_issues_vs_stars(data, language)
-    visualize_avg_stars_by_language(data)
-    visualize_top_languages(data)
-    # Call other visualization functions with the language argument
-
-if __name__ == '__main__':
-    main()
