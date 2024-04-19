@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://mcr.microsoft.com/
-        username: ${{ secrets.AzureAppService_ContainerUsername_87cd4fa689e341bc8a2943ac234559cb }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_0b1dc976c159413d91973001263bdc9b }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_226fb1612a4a4a90955cc390396b6de4 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_3acbdc50327d41ce822f22bd5be3e060 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_87cd4fa689e341bc8a2943ac234559cb }}/appsvc/staticsite:${{ github.sha }}
+        tags: mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_226fb1612a4a4a90955cc390396b6de4 }}/appsvc/staticsite:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'TopRepoAnalyzer'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_749ccc1596c546629c7324eb8d3a9690 }}
-        images: 'mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_87cd4fa689e341bc8a2943ac234559cb }}/appsvc/staticsite:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f65a40e0248943889f5d7c1b56fdda02 }}
+        images: 'mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_226fb1612a4a4a90955cc390396b6de4 }}/appsvc/staticsite:${{ github.sha }}'
