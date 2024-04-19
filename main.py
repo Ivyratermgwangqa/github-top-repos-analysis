@@ -186,22 +186,23 @@ def main():
                 visualize_avg_stars_by_language(data)
             if "Top Languages" in selected_visualizations:
                 visualize_top_languages(data)
+            
+            elif choice == "About":
+                st.subheader("About Page")
+                st.write("This Streamlit app is designed for analyzing GitHub repositories. It provides various analysis options and visualizations based on the data obtained from GitHub.")
+                
+                st.write("Features:")
+                st.write("- Top Repositories Analysis: Retrieve and display information about the top repositories on GitHub based on programming language.")
+                st.write("- Analysis: Perform different types of analysis such as yearly trends, quarterly trends, regression analysis, and volatility analysis.")
+                st.write("- Additional Analysis: Calculate average stars, find the most popular programming language, count repositories by language, and more.")
+                st.write("- Data Visualization: Visualize the data using various charts and plots.")
+                
+                st.write("Technologies Used:")
+                st.write("- Streamlit: Used for building the web application and creating an interactive user interface.")
+                st.write("- Pandas: Utilized for data manipulation and analysis.")
+                st.write("- Matplotlib and Seaborn: Employed for data visualization.")
+                st.write("- GitHub API: Access GitHub repositories data for analysis.")
 
-elif choice == "About":
-    st.subheader("About Page")
-    st.write("This Streamlit app is designed for analyzing GitHub repositories. It provides various analysis options and visualizations based on the data obtained from GitHub.")
-    
-    st.write("Features:")
-    st.write("- Top Repositories Analysis: Retrieve and display information about the top repositories on GitHub based on programming language.")
-    st.write("- Analysis: Perform different types of analysis such as yearly trends, quarterly trends, regression analysis, and volatility analysis.")
-    st.write("- Additional Analysis: Calculate average stars, find the most popular programming language, count repositories by language, and more.")
-    st.write("- Data Visualization: Visualize the data using various charts and plots.")
-    
-    st.write("Technologies Used:")
-    st.write("- Streamlit: Used for building the web application and creating an interactive user interface.")
-    st.write("- Pandas: Utilized for data manipulation and analysis.")
-    st.write("- Matplotlib and Seaborn: Employed for data visualization.")
-    st.write("- GitHub API: Access GitHub repositories data for analysis.")
 
 if __name__ == "__main__":
     main()
